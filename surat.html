@@ -3,97 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surat Spesial Untukmu</title>
+    <title>Spesial Untukmu</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Efek animasi tambahan */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        .animasi-ngambang {
-            animation: float 3s ease-in-out infinite;
-        }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0px); } }
+        .floating { animation: float 3s ease-in-out infinite; }
+        .hidden-step { display: none; opacity: 0; transition: opacity 0.5s ease; }
+        .active-step { display: block; opacity: 1; }
     </style>
 </head>
-<body class="bg-pink-100 flex items-center justify-center min-h-screen bg-cover bg-center bg-fixed transition-all duration-700" id="bodyLatar">
+<body id="bodyBg" class="bg-slate-900 flex items-center justify-center min-h-screen bg-cover bg-center bg-fixed p-4 text-gray-800">
 
-    <!-- Layar Sentuh Awal (Wajib agar musik bisa memutar otomatis di HP) -->
-    <div id="layarAwal" class="fixed inset-0 bg-pink-200 flex flex-col items-center justify-center z-50">
-        <div class="animasi-ngambang text-center">
-            <div class="text-6xl mb-4">💌</div>
-            <h1 class="text-2xl font-bold text-pink-600 mb-6" style="font-family: cursive;">Ada pesan spesial buat kamu...</h1>
-            <button onclick="bukaSurat()" class="bg-pink-600 text-white px-8 py-3 rounded-full font-bold shadow-xl hover:bg-pink-700 active:scale-95 transition-all">
-                Buka Surat
+    <!-- KARTU UTAMA -->
+    <div id="cardBox" class="bg-white/90 backdrop-blur-md p-6 sm:p-8 rounded-3xl shadow-2xl w-full max-w-md text-center transition-all duration-500 border-t-8 border-pink-500">
+        
+        <!-- TAHAP 1: PEMBUKA PENASARAN -->
+        <div id="step1" class="active-step space-y-5">
+            <div class="text-5xl floating">💌</div>
+            <h2 id="judulPenerima1" class="text-2xl font-bold text-pink-600" style="font-family: cursive;">Hai, Seseorang...</h2>
+            <p id="teksPesan1" class="text-gray-600 italic leading-relaxed text-sm bg-pink-50 p-4 rounded-2xl"></p>
+            <button onclick="lanjutStep(2)" id="btnStep1" class="w-full text-white font-bold py-3 rounded-full shadow-lg transition-transform active:scale-95">
+                Sentuh untuk Lanjut ✨
             </button>
         </div>
-    </div>
 
-    <!-- Isi Kartu Ucapan -->
-    <div id="isiSurat" class="hidden bg-white/85 backdrop-blur-sm p-8 rounded-3xl shadow-2xl w-full max-w-md mx-4 text-center transform transition-all">
-        <!-- Foto Utama -->
-        <img id="fotoUtama" src="" class="w-40 h-40 object-cover rounded-full mx-auto border-4 border-pink-400 shadow-lg mb-5" alt="Foto">
-        
-        <!-- Teks -->
-        <h2 class="text-2xl font-bold text-pink-600 mb-4" style="font-family: cursive;">Untuk: <span id="namaTujuan"></span></h2>
-        
-        <div class="bg-pink-50/50 p-4 rounded-2xl mb-6 shadow-inner">
-            <p id="pesanUtama" class="text-gray-700 whitespace-pre-wrap italic leading-relaxed"></p>
+        <!-- TAHAP 2: MAKIN MENDALAM -->
+        <div id="step2" class="hidden-step space-y-5">
+            <div class="text-5xl floating">💫</div>
+            <h3 class="text-xl font-bold text-pink-600" style="font-family: cursive;">Ada rahasia kecil...</h3>
+            <p id="teksPesan2" class="text-gray-600 italic leading-relaxed text-sm bg-pink-50 p-4 rounded-2xl"></p>
+            <div class="flex gap-2">
+                <button onclick="lanjutStep(1)" class="w-1/3 bg-gray-200 text-gray-700 font-bold py-3 rounded-full text-xs">Kembali</button>
+                <button onclick="lanjutStep(3)" id="btnStep2" class="w-2/3 text-white font-bold py-3 rounded-full shadow-lg text-sm">Menuju Puncak 🌹</button>
+            </div>
         </div>
-        
-        <p class="text-sm font-bold text-pink-500">Dari: <span id="ttdPengirim"></span></p>
+
+        <!-- TAHAP 3: PUNCAK ROMANTIS & MUSIK NYALA -->
+        <div id="step3" class="hidden-step space-y-4">
+            <div class="inline-block p-1 bg-white rounded-2xl shadow-md border-2 border-pink-300 transform -rotate-1 hover:rotate-0 transition-transform">
+                <!-- Foto Kotak Persegi (Bukan Bulat) -->
+                <img id="fotoUtama" src="" class="w-48 h-56 object-cover rounded-xl mx-auto shadow-inner" alt="Foto Spesial">
+            </div>
+            
+            <h2 class="text-2xl font-bold text-pink-600" style="font-family: cursive;" id="namaPuncak"></h2>
+            
+            <div class="bg-pink-50 p-4 rounded-2xl shadow-inner border border-pink-200">
+                <p id="teksPuncak" class="text-gray-700 font-medium italic text-sm leading-relaxed"></p>
+            </div>
+            
+            <p id="ttdLabel" class="text-sm font-bold text-pink-500 pt-1"></p>
+            
+            <div class="text-xs text-pink-400 font-semibold pt-2 animate-pulse">🎵 Musik Romantis Mengalun di Puncak Ini</div>
+        </div>
+
     </div>
 
-    <!-- Pemutar Musik -->
+    <!-- AUDIO PEMUTAR MUSIK DI PUNCAK -->
     <audio id="musikLatar" loop></audio>
 
     <script>
-        // Fungsi untuk mengambil dan memecah data dari link
+        let temaWarna = "#ec4899";
+
         window.onload = function() {
             try {
-                // Ambil parameter '?d=' dari URL web
-                const urlParams = new URLSearchParams(window.location.search);
-                const dataRahasia = urlParams.get('d');
+                const params = new URLSearchParams(window.location.search);
+                const dataRaw = params.get('d');
+                if(!dataRaw) throw new Error("Data tidak ada");
+
+                const data = JSON.parse(decodeURIComponent(atob(dataRaw)));
                 
-                if (!dataRahasia) {
-                    throw new Error("Pesan tidak ditemukan.");
+                // Set Data Teks & Gambar
+                document.getElementById('judulPenerima1').innerText = "Untuk: " + data.n;
+                document.getElementById('teksPesan1').innerText = data.p1;
+                document.getElementById('teksPesan2').innerText = data.p2;
+                document.getElementById('namaPuncak').innerText = "Untuk: " + data.n;
+                document.getElementById('teksPuncak').innerText = data.pp;
+                document.getElementById('ttdLabel').innerText = "Dari: " + data.t;
+                document.getElementById('fotoUtama').src = data.ft;
+                document.getElementById('musikLatar').src = data.m;
+
+                if(data.fl) {
+                    document.getElementById('bodyBg').style.backgroundImage = `url('${data.fl}')`;
                 }
 
-                // Terjemahkan data
-                const dataAsli = JSON.parse(decodeURIComponent(atob(dataRahasia)));
-
-                // Masukkan data ke dalam halaman web
-                document.getElementById('namaTujuan').innerText = dataAsli.n;
-                document.getElementById('pesanUtama').innerText = dataAsli.p;
-                document.getElementById('ttdPengirim').innerText = dataAsli.t;
-                
-                // Masukkan link foto dan musik dari Vercel Blob
-                document.getElementById('fotoUtama').src = dataAsli.ft;
-                document.getElementById('musikLatar').src = dataAsli.m;
-
-                // Jika ada foto latar, pasang di background
-                if (dataAsli.fl && dataAsli.fl !== "") {
-                    document.getElementById('bodyLatar').style.backgroundImage = `url('${dataAsli.fl}')`;
+                if(data.c) {
+                    temaWarna = data.c;
+                    document.getElementById('btnStep1').style.backgroundColor = temaWarna;
+                    document.getElementById('btnStep2').style.backgroundColor = temaWarna;
+                    document.getElementById('cardBox').style.borderTopColor = temaWarna;
                 }
-
-            } catch (error) {
-                alert("Maaf, link surat ini rusak atau tidak valid.");
-                console.error(error);
+            } catch(e) {
+                alert("Link tidak valid atau rusak.");
             }
         };
 
-        // Fungsi saat tombol Buka Surat ditekan
-        function bukaSurat() {
-            // Hilangkan layar awal
-            document.getElementById('layarAwal').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('layarAwal').classList.add('hidden');
-                // Tampilkan isi surat
-                document.getElementById('isiSurat').classList.remove('hidden');
-                // Putar musik
-                document.getElementById('musikLatar').play().catch(e => console.log("Musik diblokir browser: ", e));
-            }, 500);
+        function lanjutStep(tujuan) {
+            document.getElementById('step1').classList.remove('active-step');
+            document.getElementById('step1').classList.add('hidden-step');
+            document.getElementById('step2').classList.remove('active-step');
+            document.getElementById('step2').classList.add('hidden-step');
+            
+            if(tujuan === 1) {
+                document.getElementById('step1').classList.remove('hidden-step');
+                document.getElementById('step1').classList.add('active-step');
+            } else if(tujuan === 2) {
+                document.getElementById('step2').classList.remove('hidden-step');
+                document.getElementById('step2').classList.add('active-step');
+            } else if(tujuan === 3) {
+                // INI ADALAH PUNCAK: NYALAKAN MUSIK OTOMATIS & TAMPILKAN FOTO KOTAK
+                document.getElementById('step3').classList.remove('hidden-step');
+                document.getElementById('step3').classList.add('active-step');
+                
+                const musik = document.getElementById('musikLatar');
+                musik.play().catch(err => console.log("Audio play error:", err));
+            }
         }
     </script>
 </body>
