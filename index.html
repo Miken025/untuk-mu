@@ -15,25 +15,25 @@
         <form id="formUcapan" class="space-y-4">
             <div>
                 <label class="block text-xs font-bold text-slate-300 mb-1">NAMA TUJUAN</label>
-                <input type="text" id="nama" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 text-sm" placeholder="Contoh: Andi" required>
+                <input type="text" id="nama" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 text-sm" placeholder="Contoh: Miken" required>
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1">FOTO UTAMA (Puncak Kartu)</label>
+                <label class="block text-xs font-bold text-slate-300 mb-1">FOTO UTAMA (Puncak Surat Inti)</label>
                 <input type="file" id="fotoUtama" accept="image/*" class="w-full bg-slate-950 border border-white/15 rounded-xl p-2.5 text-xs text-slate-300 file:bg-amber-500 file:text-white file:border-0 file:rounded-lg file:px-3 file:py-1.5" required>
             </div>
 
-            <!-- CONTAINER GALERI FOTO & TEKS PANJANG (BIKIN CAPEK NGE-GESER) -->
+            <!-- GALERI GESER SEBELUM PUNCAK (POPUP CERITA BERUNTUN) -->
             <div class="bg-slate-950/50 border border-white/10 p-4 rounded-2xl space-y-3">
-                <label class="block text-xs font-bold text-amber-300">GALERI PERJALANAN (Bisa Banyak Foto & Teks/Caption)</label>
+                <label class="block text-xs font-bold text-amber-300">GALERI GESER (Cerita Sebelum Puncak / Bikin Capek Geser)</label>
                 <div id="wrapperGaleri" class="space-y-3">
                     <div class="item-galeri bg-slate-900 p-3 rounded-xl border border-white/10 space-y-2">
                         <input type="file" accept="image/*" class="file-galeri w-full bg-slate-950 border border-white/15 rounded-lg p-2 text-xs text-slate-300 file:bg-purple-600 file:text-white file:border-0 file:rounded file:px-2 file:py-1">
-                        <input type="text" placeholder="Teks / Caption foto ini (opsional)..." class="teks-galeri w-full bg-slate-950 border border-white/15 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-400">
+                        <input type="text" placeholder="Teks / Cerita untuk foto ini..." class="teks-galeri w-full bg-slate-950 border border-white/15 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-400">
                     </div>
                 </div>
                 <button type="button" onclick="tambahKotakGaleri()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium py-2 rounded-xl text-amber-200 transition-all">
-                    + Tambah Foto & Teks Geser Lagi
+                    + Tambah Foto & Cerita Geser Lagi
                 </button>
             </div>
 
@@ -49,12 +49,12 @@
 
             <div>
                 <label class="block text-xs font-bold text-slate-300 mb-1">KATA-KATA UTAMA / PESAN PUNCAK</label>
-                <textarea id="pesan" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 h-28 text-white focus:outline-none focus:border-amber-400 text-sm" placeholder="Tulis ungkapan hati utama di puncak..." required></textarea>
+                <textarea id="pesan" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 h-28 text-white focus:outline-none focus:border-amber-400 text-sm" placeholder="Tulis isi pesan atau surat di puncak..." required></textarea>
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-slate-300 mb-1">TANDA TANGAN PENGIRIM</label>
-                <input type="text" id="ttd" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 text-sm" placeholder="Contoh: Dari Rajendra" required>
+                <input type="text" id="ttd" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 text-sm" placeholder="Contoh: Kkk" required>
             </div>
 
             <div>
@@ -74,9 +74,9 @@
             const div = document.createElement('div');
             div.className = "item-galeri bg-slate-900 p-3 rounded-xl border border-white/10 space-y-2";
             div.innerHTML = `
-                <div class="flex justify-between items-center"><span class="text-[10px] text-slate-400">Foto & Caption Tambahan</span> <button type="button" onclick="this.parentElement.parentElement.remove()" class="text-rose-400 text-xs">Hapus</button></div>
+                <div class="flex justify-between items-center"><span class="text-[10px] text-slate-400">Foto & Teks Geser</span> <button type="button" onclick="this.parentElement.parentElement.remove()" class="text-rose-400 text-xs">Hapus</button></div>
                 <input type="file" accept="image/*" class="file-galeri w-full bg-slate-950 border border-white/15 rounded-lg p-2 text-xs text-slate-300 file:bg-purple-600 file:text-white file:border-0 file:rounded file:px-2 file:py-1">
-                <input type="text" placeholder="Teks / Caption foto ini (opsional)..." class="teks-galeri w-full bg-slate-950 border border-white/15 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-400">
+                <input type="text" placeholder="Teks / Cerita untuk foto ini..." class="teks-galeri w-full bg-slate-950 border border-white/15 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-400">
             `;
             wrapper.appendChild(div);
         }
@@ -109,7 +109,6 @@
                 const linkUtama = await uploadKeVercel(fotoUtamaFile);
                 const linkMusik = await uploadKeVercel(musikFile);
 
-                // Ambil semua item galeri & captionnya
                 const itemGaleriList = document.querySelectorAll('.item-galeri');
                 let arrayGaleri = [];
 
@@ -140,8 +139,6 @@
                 
                 const currentUrl = window.location.href.split('index.html')[0].split('?')[0];
                 const baseUrl = currentUrl.endsWith('/') ? currentUrl : currentUrl + '/';
-                
-                // LINK PENDEK PROFESIONAL (Domain + Nama Tujuan + Data)
                 const finalLink = `${baseUrl}surat.html?to=${namaTujuanSlug}&d=${dataKecil}`;
 
                 Swal.fire({
