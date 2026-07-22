@@ -10,12 +10,12 @@
 <body class="bg-slate-950 text-slate-100 flex items-center justify-center min-h-screen p-4 font-sans">
     <div class="bg-slate-900/80 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl w-full max-w-lg">
         <h1 class="text-2xl font-bold text-center mb-1 text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-rose-400">Creator Kartu Ucapan ✨</h1>
-        <p class="text-center text-slate-400 text-xs mb-6 uppercase tracking-widest">Level Max Profesional & Estetik</p>
+        <p class="text-center text-slate-400 text-xs mb-6 uppercase tracking-widest">Level Max Profesional & Publik</p>
         
         <form id="formUcapan" class="space-y-4">
             <div>
                 <label class="block text-xs font-bold text-slate-300 mb-1">NAMA TUJUAN</label>
-                <input type="text" id="nama" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400" placeholder="Contoh: Andi" required>
+                <input type="text" id="nama" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 text-sm" placeholder="Contoh: Andi" required>
             </div>
 
             <div>
@@ -23,30 +23,38 @@
                 <input type="file" id="fotoUtama" accept="image/*" class="w-full bg-slate-950 border border-white/15 rounded-xl p-2.5 text-xs text-slate-300 file:bg-amber-500 file:text-white file:border-0 file:rounded-lg file:px-3 file:py-1.5" required>
             </div>
 
-            <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1">GALERI FOTO GESER (Bisa Banyak / Buat Capek Nge-scroll 😁)</label>
-                <input type="file" id="fotoGaleri" accept="image/*" multiple class="w-full bg-slate-950 border border-white/15 rounded-xl p-2.5 text-xs text-slate-300 file:bg-purple-600 file:text-white file:border-0 file:rounded-lg file:px-3 file:py-1.5">
-                <p class="text-[10px] text-amber-300/80 mt-1">Tips: Anda bisa memilih banyak foto sekaligus di galeri HP Anda.</p>
+            <!-- CONTAINER GALERI FOTO & TEKS PANJANG (BIKIN CAPEK NGE-GESER) -->
+            <div class="bg-slate-950/50 border border-white/10 p-4 rounded-2xl space-y-3">
+                <label class="block text-xs font-bold text-amber-300">GALERI PERJALANAN (Bisa Banyak Foto & Teks/Caption)</label>
+                <div id="wrapperGaleri" class="space-y-3">
+                    <div class="item-galeri bg-slate-900 p-3 rounded-xl border border-white/10 space-y-2">
+                        <input type="file" accept="image/*" class="file-galeri w-full bg-slate-950 border border-white/15 rounded-lg p-2 text-xs text-slate-300 file:bg-purple-600 file:text-white file:border-0 file:rounded file:px-2 file:py-1">
+                        <input type="text" placeholder="Teks / Caption foto ini (opsional)..." class="teks-galeri w-full bg-slate-950 border border-white/15 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-400">
+                    </div>
+                </div>
+                <button type="button" onclick="tambahKotakGaleri()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium py-2 rounded-xl text-amber-200 transition-all">
+                    + Tambah Foto & Teks Geser Lagi
+                </button>
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-slate-300 mb-1">PILIH TEMA WARNA</label>
                 <select id="pilihanTema" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 text-sm">
-                    <option value="midnight">Midnight Dark & Rose Gold (Elegan Netral)</option>
-                    <option value="emerald">Royal Emerald & Gold (Mewah & Maskulin)</option>
-                    <option value="sunset">Sunset Orange & Deep Purple (Romantis Hangat)</option>
-                    <option value="crimson">Crimson Red & Dark (Super Romantis)</option>
+                    <option value="midnight">Midnight Dark & Rose Gold</option>
+                    <option value="emerald">Royal Emerald & Gold</option>
+                    <option value="sunset">Sunset Orange & Deep Purple</option>
+                    <option value="crimson">Crimson Red & Dark</option>
                 </select>
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1">KATA-KATA UTAMA / PESAN</label>
-                <textarea id="pesan" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 h-28 text-white focus:outline-none focus:border-amber-400 text-sm" placeholder="Tulis ungkapan hati yang panjang dan berkesan..." required></textarea>
+                <label class="block text-xs font-bold text-slate-300 mb-1">KATA-KATA UTAMA / PESAN PUNCAK</label>
+                <textarea id="pesan" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 h-28 text-white focus:outline-none focus:border-amber-400 text-sm" placeholder="Tulis ungkapan hati utama di puncak..." required></textarea>
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-slate-300 mb-1">TANDA TANGAN PENGIRIM</label>
-                <input type="text" id="ttd" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400" placeholder="Contoh: Dari Rajendra" required>
+                <input type="text" id="ttd" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 text-sm" placeholder="Contoh: Dari Rajendra" required>
             </div>
 
             <div>
@@ -55,12 +63,24 @@
             </div>
 
             <button type="submit" class="w-full bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white font-bold rounded-2xl py-4 mt-2 shadow-xl hover:opacity-95 active:scale-95 transition-all tracking-wide">
-                Buat Link Kartu Ucapan 💌
+                Buat Link Profesional 💌
             </button>
         </form>
     </div>
 
     <script>
+        function tambahKotakGaleri() {
+            const wrapper = document.getElementById('wrapperGaleri');
+            const div = document.createElement('div');
+            div.className = "item-galeri bg-slate-900 p-3 rounded-xl border border-white/10 space-y-2";
+            div.innerHTML = `
+                <div class="flex justify-between items-center"><span class="text-[10px] text-slate-400">Foto & Caption Tambahan</span> <button type="button" onclick="this.parentElement.parentElement.remove()" class="text-rose-400 text-xs">Hapus</button></div>
+                <input type="file" accept="image/*" class="file-galeri w-full bg-slate-950 border border-white/15 rounded-lg p-2 text-xs text-slate-300 file:bg-purple-600 file:text-white file:border-0 file:rounded file:px-2 file:py-1">
+                <input type="text" placeholder="Teks / Caption foto ini (opsional)..." class="teks-galeri w-full bg-slate-950 border border-white/15 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-400">
+            `;
+            wrapper.appendChild(div);
+        }
+
         async function uploadKeVercel(file) {
             const cleanName = file.name.replace(/[^a-zA-Z0-9.-]/g, '');
             const response = await fetch(`/api/upload?filename=${Date.now()}-${cleanName}`, {
@@ -77,7 +97,7 @@
             
             Swal.fire({
                 title: 'Memproses Karya...',
-                html: 'Mengunggah foto dan musik ke server Vercel...',
+                html: 'Mengunggah file ke server aman...',
                 allowOutsideClick: false,
                 didOpen: () => { Swal.showLoading(); }
             });
@@ -85,17 +105,24 @@
             try {
                 const fotoUtamaFile = document.getElementById('fotoUtama').files[0];
                 const musikFile = document.getElementById('musik').files[0];
-                const fileGaleriList = document.getElementById('fotoGaleri').files;
 
-                // Upload Foto Utama & Musik
                 const linkUtama = await uploadKeVercel(fotoUtamaFile);
                 const linkMusik = await uploadKeVercel(musikFile);
 
-                // Upload Banyak Foto Galeri (Looping otomatis)
+                // Ambil semua item galeri & captionnya
+                const itemGaleriList = document.querySelectorAll('.item-galeri');
                 let arrayGaleri = [];
-                for (let i = 0; i < fileGaleriList.length; i++) {
-                    const urlGaleri = await uploadKeVercel(fileGaleriList[i]);
-                    arrayGaleri.push(urlGaleri);
+
+                for (let item of itemGaleriList) {
+                    const fileInput = item.querySelector('.file-galeri');
+                    const textInput = item.querySelector('.teks-galeri');
+                    if (fileInput.files.length > 0) {
+                        const urlFoto = await uploadKeVercel(fileInput.files[0]);
+                        arrayGaleri.push({
+                            url: urlFoto,
+                            caption: textInput.value.trim()
+                        });
+                    }
                 }
 
                 const dataKirim = {
@@ -109,9 +136,13 @@
                 };
 
                 const dataKecil = btoa(encodeURIComponent(JSON.stringify(dataKirim)));
-                const currentUrl = window.location.href.split('index.html')[0];
+                const namaTujuanSlug = document.getElementById('nama').value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+                
+                const currentUrl = window.location.href.split('index.html')[0].split('?')[0];
                 const baseUrl = currentUrl.endsWith('/') ? currentUrl : currentUrl + '/';
-                const finalLink = baseUrl + "surat.html?d=" + dataKecil;
+                
+                // LINK PENDEK PROFESIONAL (Domain + Nama Tujuan + Data)
+                const finalLink = `${baseUrl}surat.html?to=${namaTujuanSlug}&d=${dataKecil}`;
 
                 Swal.fire({
                     icon: 'success',
@@ -131,7 +162,7 @@
 
             } catch (err) {
                 console.error(err);
-                Swal.fire('Error', 'Proses gagal. Pastikan ukuran file tidak melebihi batas server.', 'error');
+                Swal.fire('Error', 'Proses gagal. Periksa ukuran file Anda.', 'error');
             }
         });
     </script>
