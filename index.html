@@ -3,42 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembuat Kartu Ucapan</title>
+    <title>Buat Kartu Ucapan Romantis</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="bg-pink-50 flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md">
-        <h1 class="text-3xl font-bold text-pink-600 text-center mb-2" style="font-family: cursive;">Kartu Ucapan</h1>
-        <p class="text-center text-gray-500 mb-6">Penyimpanan Resmi Vercel ✨</p>
+<body class="bg-slate-900 flex items-center justify-center min-h-screen p-4 text-slate-800">
+    <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md border-t-8 border-pink-500">
+        <h1 class="text-3xl font-bold text-pink-600 text-center mb-1" style="font-family: cursive;">Special Generator</h1>
+        <p class="text-center text-gray-400 text-xs mb-6">Buat kejutan interaktif & romantis ✨</p>
         
         <form id="formUcapan" class="space-y-4">
             <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">NAMA TUJUAN</label>
-                <input type="text" id="nama" class="w-full border-2 border-pink-200 rounded-xl p-3" placeholder="Contoh: Andi" required>
+                <label class="block text-xs font-bold text-gray-600 mb-1">NAMA PENERIMA (Untuk Link Pendek)</label>
+                <input type="text" id="nama" class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-pink-500 outline-none" placeholder="Contoh: andi (tanpa spasi)" required>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">FOTO UTAMA</label>
+                    <input type="file" id="fotoTujuan" accept="image/*" class="w-full border-2 border-gray-200 rounded-xl p-2 text-xs bg-gray-50" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">FOTO LATAR BELAKANG</label>
+                    <input type="file" id="fotoLatar" accept="image/*" class="w-full border-2 border-gray-200 rounded-xl p-2 text-xs bg-gray-50">
+                </div>
             </div>
             <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">FOTO ORANGNYA (Dari HP)</label>
-                <input type="file" id="fotoTujuan" accept="image/*" class="w-full border-2 border-pink-200 rounded-xl p-2 bg-pink-50/50" required>
+                <label class="block text-xs font-bold text-gray-600 mb-1">PESAN TAHAP 1 (Pembuka Rasa Penasaran)</label>
+                <textarea id="pesan1" class="w-full border-2 border-gray-200 rounded-xl p-3 h-16 text-sm" placeholder="Contoh: Hai kamu, ada sesuatu yang ingin aku sampaikan..." required></textarea>
             </div>
             <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">FOTO LATAR (Dari HP - Opsional)</label>
-                <input type="file" id="fotoLatar" accept="image/*" class="w-full border-2 border-pink-200 rounded-xl p-2 bg-pink-50/50">
+                <label class="block text-xs font-bold text-gray-600 mb-1">PESAN TAHAP 2 (Makin Menyentuh Hati)</label>
+                <textarea id="pesan2" class="w-full border-2 border-gray-200 rounded-xl p-3 h-16 text-sm" placeholder="Contoh: Sebenarnya selama ini ada perasaan yang tersimpan..." required></textarea>
             </div>
             <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">KATA-KATA UTAMA</label>
-                <textarea id="pesan" class="w-full border-2 border-pink-200 rounded-xl p-3 h-24" placeholder="Tulis kata-kata romantis di sini..." required></textarea>
+                <label class="block text-xs font-bold text-gray-600 mb-1">PESAN PUNCAK (Romantis & Spesial di Akhir)</label>
+                <textarea id="pesanPuncak" class="w-full border-2 border-gray-200 rounded-xl p-3 h-20 text-sm border-pink-400 bg-pink-50/30" placeholder="Contoh: Puncaknya, maukah kamu jadi teman hidupku selamanya?" required></textarea>
             </div>
             <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">TANDA TANGAN PENGIRIM</label>
-                <input type="text" id="ttd" class="w-full border-2 border-pink-200 rounded-xl p-3" placeholder="Contoh: Dari Rajen" required>
+                <label class="block text-xs font-bold text-gray-600 mb-1">TANDA TANGAN PENGIRIM</label>
+                <input type="text" id="ttd" class="w-full border-2 border-gray-200 rounded-xl p-3" placeholder="Contoh: Dari Rajendra" required>
             </div>
             <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">MUSIK LATAR (.MP3 Dari HP)</label>
-                <input type="file" id="musik" accept="audio/*" class="w-full border-2 border-pink-200 rounded-xl p-2 bg-pink-50/50" required>
+                <label class="block text-xs font-bold text-gray-600 mb-1">LAGU MP3 (Putar di Puncak Acara)</label>
+                <input type="file" id="musik" accept="audio/*" class="w-full border-2 border-gray-200 rounded-xl p-2 text-xs bg-gray-50" required>
             </div>
-            <button type="submit" class="w-full bg-pink-600 text-white font-bold rounded-full py-4 mt-4 shadow-lg hover:bg-pink-700">
-                Buat Link Kartu Ucapan 💌
+            <div>
+                <label class="block text-xs font-bold text-gray-600 mb-1">PILIH WARNA TEMA UTAMA</label>
+                <input type="color" id="warnaTema" value="#ec4899" class="w-full h-12 rounded-xl cursor-pointer border-2 border-gray-200 p-1">
+            </div>
+            
+            <button type="submit" class="w-full bg-pink-600 text-white font-bold rounded-full py-4 mt-2 shadow-lg hover:bg-pink-700 transition-all">
+                Buat Link Romantis 💌
             </button>
         </form>
     </div>
@@ -50,71 +65,54 @@
                 method: 'POST',
                 body: file
             });
-            
-            if (!response.ok) throw new Error("Gagal upload ke Vercel");
+            if (!response.ok) throw new Error("Gagal upload");
             const data = await response.json();
-            return data.url; 
+            return data.url;
         }
 
         document.getElementById('formUcapan').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            Swal.fire({
-                title: 'Menyimpan Data...',
-                html: 'Sedang menyimpan file ke server aman...',
-                allowOutsideClick: false,
-                didOpen: () => { Swal.showLoading(); }
-            });
+            Swal.fire({ title: 'Menyiapkan Kejutan...', html: 'Mengunggah aset romantis ke server...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
 
             try {
-                const namaTujuan = document.getElementById('nama').value.trim().toLowerCase().replace(/\s+/g, '-');
-                
-                const fileTujuanObj = document.getElementById('fotoTujuan').files[0];
-                const fileLatarObj = document.getElementById('fotoLatar').files[0];
-                const fileMusikObj = document.getElementById('musik').files[0];
+                const rawNama = document.getElementById('nama').value.trim().toLowerCase().replace(/[^a-z0-9]/g, '-');
+                const fileTujuan = document.getElementById('fotoTujuan').files[0];
+                const fileLatar = document.getElementById('fotoLatar').files[0];
+                const fileMusik = document.getElementById('musik').files[0];
 
-                const linkTujuan = await uploadKeVercel(fileTujuanObj);
-                const linkMusik = await uploadKeVercel(fileMusikObj);
-                let linkLatar = "";
-                if (fileLatarObj) {
-                    linkLatar = await uploadKeVercel(fileLatarObj);
-                }
+                const linkFoto = await uploadKeVercel(fileTujuan);
+                const linkMusik = await uploadKeVercel(fileMusik);
+                let linkLatar = fileLatar ? await uploadKeVercel(fileLatar) : "";
 
-                const data = {
+                const dataObj = {
                     n: document.getElementById('nama').value,
-                    p: document.getElementById('pesan').value,
+                    p1: document.getElementById('pesan1').value,
+                    p2: document.getElementById('pesan2').value,
+                    pp: document.getElementById('pesanPuncak').value,
                     t: document.getElementById('ttd').value,
-                    ft: linkTujuan,
+                    ft: linkFoto,
                     fl: linkLatar,
-                    m: linkMusik
+                    m: linkMusik,
+                    c: document.getElementById('warnaTema').value
                 };
 
-                const dataKecil = btoa(encodeURIComponent(JSON.stringify(data)));
+                const dataEnc = btoa(encodeURIComponent(JSON.stringify(dataObj)));
                 const currentUrl = window.location.href.split('index.html')[0];
                 const baseUrl = currentUrl.endsWith('/') ? currentUrl : currentUrl + '/';
-                
-                // Menghasilkan link menuju surat.html
-                const finalLink = baseUrl + "surat.html?d=" + dataKecil;
+                const finalLink = `${baseUrl}surat.html?to=${rawNama}&d=${dataEnc}`;
 
                 Swal.fire({
                     icon: 'success',
-                    title: '<span style="font-family:cursive; color:#d81b60">Sukses!</span>',
-                    html: `<div class="border-2 border-pink-200 border-dashed p-3 rounded-xl text-pink-600 font-bold break-all text-sm mb-3">${finalLink}</div>`,
-                    showCancelButton: true,
-                    confirmButtonText: 'Salin & Buka Link',
-                    cancelButtonText: 'Tutup',
-                    confirmButtonColor: '#25D366',
-                    cancelButtonColor: '#d33'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        navigator.clipboard.writeText(finalLink);
-                        window.location.href = finalLink;
-                    }
+                    title: '<span style="color:#db2777">Berhasil Dibuat!</span>',
+                    html: `<div class="bg-pink-50 p-3 rounded-xl border border-pink-200 text-xs font-bold text-pink-700 break-all mb-3">${finalLink}</div>`,
+                    confirmButtonText: 'Salin & Buka',
+                    confirmButtonColor: '#db2777'
+                }).then(() => {
+                    navigator.clipboard.writeText(finalLink);
+                    window.location.href = finalLink;
                 });
-
             } catch (err) {
-                console.error(err);
-                Swal.fire('Error', 'Proses gagal. Silakan coba lagi.', 'error');
+                Swal.fire('Error', 'Gagal memproses file. Pastikan ukuran file sesuai.', 'error');
             }
         });
     </script>
