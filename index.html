@@ -1,50 +1,5 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembuat Kartu Ucapan Spesial</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body class="bg-pink-50 flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md">
-        <h1 class="text-3xl font-bold text-pink-600 text-center mb-2" style="font-family: cursive;">Kartu Ucapan</h1>
-        <p class="text-center text-gray-500 mb-6">Bikin kejutan interaktif & romantis ✨</p>
-        
-        <form id="formUcapan" class="space-y-4">
-            <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">NAMA TUJUAN</label>
-                <input type="text" id="nama" class="w-full border-2 border-pink-200 rounded-xl p-3" placeholder="Contoh: Andi" required>
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">FOTO ORANGNYA (Tujuan)</label>
-                <input type="file" id="fotoTujuan" accept="image/*" class="w-full border-2 border-pink-200 rounded-xl p-2 bg-pink-50/50" required>
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">FOTO LATAR BELAKANG (Opsional)</label>
-                <input type="file" id="fotoLatar" accept="image/*" class="w-full border-2 border-pink-200 rounded-xl p-2 bg-pink-50/50">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">KATA-KATA UTAMA (Inti Ucapan)</label>
-                <textarea id="pesan" class="w-full border-2 border-pink-200 rounded-xl p-3 h-24" placeholder="Tulis kata-kata romantis di sini..." required></textarea>
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">TANDA TANGAN PENGIRIM</label>
-                <input type="text" id="ttd" class="w-full border-2 border-pink-200 rounded-xl p-3" placeholder="Contoh: Dari Rajen" required>
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-pink-700 mb-1">MUSIK LATAR (.MP3 dari HP)</label>
-                <input type="file" id="musik" accept="audio/mp3,audio/*" class="w-full border-2 border-pink-200 rounded-xl p-2 bg-pink-50/50" required>
-            </div>
-            <button type="submit" class="w-full bg-pink-600 text-white font-bold rounded-full py-4 mt-4 shadow-lg hover:bg-pink-700">
-                Buat Link Kartu Ucapan 💌
-            </button>
-        </form>
-    </div>
-
     <script>
-        // Fungsi pembantu untuk mengubah file gambar/audio dari HP menjadi format data lokal
+        // Fungsi pembantu untuk mengubah file dari HP menjadi format data lokal
         const fileToBase64 = file => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -63,6 +18,7 @@
             });
 
             try {
+                const namaTujuan = document.getElementById('nama').value.trim().toLowerCase().replace(/\s+/g, '-');
                 const fileTujuanObj = document.getElementById('fotoTujuan').files[0];
                 const fileLatarObj = document.getElementById('fotoLatar').files[0];
                 const fileMusikObj = document.getElementById('musik').files[0];
@@ -80,15 +36,19 @@
                     m: base64Musik
                 };
                 
-                const encodedData = btoa(encodeURIComponent(JSON.stringify(data)));
+                // Simpan data kartu ucapan ke memori browser sementara berdasarkan nama tujuannya
+                localStorage.setItem('ucapan_' + namaTujuan, JSON.stringify(data));
+                
                 const currentUrl = window.location.href.split('index.html')[0];
                 const baseUrl = currentUrl.endsWith('/') ? currentUrl : currentUrl + '/';
-                const finalLink = baseUrl + "surat.html?s=" + encodedData;
+                
+                // Link akhir menjadi sangat pendek dan rapi!
+                const finalLink = baseUrl + namaTujuan;
 
                 Swal.fire({
                     icon: 'success',
                     title: '<span style="font-family:cursive; color:#d81b60">Kartu ucapan siap dikirim!</span>',
-                    html: `<div class="border-2 border-pink-200 border-dashed p-3 rounded-xl text-pink-600 font-bold break-all text-xs mb-3">${finalLink}</div>`,
+                    html: `<div class="border-2 border-pink-200 border-dashed p-3 rounded-xl text-pink-600 font-bold break-all text-sm mb-3">${finalLink}</div>`,
                     showCancelButton: true,
                     confirmButtonText: 'Kirim lewat WhatsApp',
                     cancelButtonText: 'Tutup',
@@ -105,5 +65,3 @@
             }
         });
     </script>
-</body>
-</html>
