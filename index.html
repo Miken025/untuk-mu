@@ -10,26 +10,36 @@
 <body class="bg-slate-950 text-slate-100 flex items-center justify-center min-h-screen p-4 font-sans">
     <div class="bg-slate-900/80 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl w-full max-w-lg">
         <h1 class="text-2xl font-bold text-center mb-1 text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-rose-400">Creator Kartu Ucapan ✨</h1>
-        <p class="text-center text-slate-400 text-xs mb-6 uppercase tracking-widest">Level Max Profesional & Publik</p>
+        <p class="text-center text-slate-400 text-xs mb-6 uppercase tracking-widest">Level Max Profesional & Romantis</p>
         
         <form id="formUcapan" class="space-y-4">
             <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1">NAMA TUJUAN</label>
+                <label class="block text-xs font-bold text-slate-300 mb-1">NAMA PENERIMA / TUJUAN</label>
                 <input type="text" id="nama" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 text-sm" placeholder="Contoh: Miken" required>
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1">FOTO UTAMA (Puncak Surat Inti)</label>
+                <label class="block text-xs font-bold text-slate-300 mb-1">PILIH ACARA / JENIS KARTU</label>
+                <select id="jenisAcara" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 text-sm">
+                    <option value="romantis">💖 Romantis Spesial / Ungkapan Hati</option>
+                    <option value="ultah">🎂 Selamat Ulang Tahun (Birthday)</option>
+                    <option value="anniv">💍 Anniversary / Hari Jadi</option>
+                    <option value="rindu">🌙 Kerinduan / Apologetic</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">FOTO UTAMA (Puncak Kartu Inti)</label>
                 <input type="file" id="fotoUtama" accept="image/*" class="w-full bg-slate-950 border border-white/15 rounded-xl p-2.5 text-xs text-slate-300 file:bg-amber-500 file:text-white file:border-0 file:rounded-lg file:px-3 file:py-1.5" required>
             </div>
 
-            <!-- GALERI GESER SEBELUM PUNCAK (POPUP CERITA BERUNTUN) -->
+            <!-- GALERI FOTO GESER SEBELUM PUNCAK -->
             <div class="bg-slate-950/50 border border-white/10 p-4 rounded-2xl space-y-3">
-                <label class="block text-xs font-bold text-amber-300">GALERI GESER (Cerita Sebelum Puncak / Bikin Capek Geser)</label>
+                <label class="block text-xs font-bold text-amber-300">GALERI CERITA GESER (Sebelum Puncak / Bikin Penasaran)</label>
                 <div id="wrapperGaleri" class="space-y-3">
                     <div class="item-galeri bg-slate-900 p-3 rounded-xl border border-white/10 space-y-2">
                         <input type="file" accept="image/*" class="file-galeri w-full bg-slate-950 border border-white/15 rounded-lg p-2 text-xs text-slate-300 file:bg-purple-600 file:text-white file:border-0 file:rounded file:px-2 file:py-1">
-                        <input type="text" placeholder="Teks / Cerita untuk foto ini..." class="teks-galeri w-full bg-slate-950 border border-white/15 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-400">
+                        <input type="text" placeholder="Teks / Kenangan untuk foto ini..." class="teks-galeri w-full bg-slate-950 border border-white/15 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-400">
                     </div>
                 </div>
                 <button type="button" onclick="tambahKotakGaleri()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium py-2 rounded-xl text-amber-200 transition-all">
@@ -40,16 +50,16 @@
             <div>
                 <label class="block text-xs font-bold text-slate-300 mb-1">PILIH TEMA WARNA</label>
                 <select id="pilihanTema" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-amber-400 text-sm">
-                    <option value="midnight">Midnight Dark & Rose Gold</option>
-                    <option value="emerald">Royal Emerald & Gold</option>
-                    <option value="sunset">Sunset Orange & Deep Purple</option>
-                    <option value="crimson">Crimson Red & Dark</option>
+                    <option value="midnight">Midnight Dark & Rose Gold (Elegan)</option>
+                    <option value="emerald">Royal Emerald & Gold (Mewah)</option>
+                    <option value="sunset">Sunset Orange & Deep Purple (Hangat)</option>
+                    <option value="crimson">Crimson Red & Dark (Super Romantis)</option>
                 </select>
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-slate-300 mb-1">KATA-KATA UTAMA / PESAN PUNCAK</label>
-                <textarea id="pesan" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 h-28 text-white focus:outline-none focus:border-amber-400 text-sm" placeholder="Tulis isi pesan atau surat di puncak..." required></textarea>
+                <textarea id="pesan" class="w-full bg-slate-950 border border-white/15 rounded-xl p-3 h-28 text-white focus:outline-none focus:border-amber-400 text-sm" placeholder="Tulis ungkapan hati terdalam di puncak..." required></textarea>
             </div>
 
             <div>
@@ -63,7 +73,7 @@
             </div>
 
             <button type="submit" class="w-full bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white font-bold rounded-2xl py-4 mt-2 shadow-xl hover:opacity-95 active:scale-95 transition-all tracking-wide">
-                Buat Link Profesional 💌
+                Buat Link Kartu Ucapan 💌
             </button>
         </form>
     </div>
@@ -97,7 +107,7 @@
             
             Swal.fire({
                 title: 'Memproses Karya...',
-                html: 'Mengunggah file ke server aman...',
+                html: 'Menyiapkan kartu ucapan eksklusif...',
                 allowOutsideClick: false,
                 didOpen: () => { Swal.showLoading(); }
             });
@@ -131,7 +141,8 @@
                     ft: linkUtama,
                     galeri: arrayGaleri,
                     m: linkMusik,
-                    tema: document.getElementById('pilihanTema').value
+                    tema: document.getElementById('pilihanTema').value,
+                    acara: document.getElementById('jenisAcara').value
                 };
 
                 const dataKecil = btoa(encodeURIComponent(JSON.stringify(dataKirim)));
