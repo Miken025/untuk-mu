@@ -1,61 +1,3 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Untuk Kamu yang Spesial ✨</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        .slide { display: none; }
-        .slide.active { display: flex; }
-    </style>
-</head>
-<body class="overflow-hidden bg-black text-white relative min-h-screen">
-    <!-- Latar Belakang Foto -->
-    <div id="bgImage" class="absolute inset-0 z-0 bg-cover bg-center transition-all duration-1000 filter blur-md brightness-40 scale-105"></div>
-    
-    <audio id="bgMusic" loop></audio>
-
-    <!-- Tahap 1: Gerbang Penasaran / Drama Pembuka -->
-    <div id="introScreen" class="absolute inset-0 z-20 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-700">
-        <div class="bg-white/10 border border-white/20 p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center">
-            <div class="text-5xl mb-4 animate-bounce">💌</div>
-            <h1 class="text-2xl font-bold mb-2">Ada Sesuatu untukmu...</h1>
-            <p class="text-gray-300 text-sm mb-6">Seseorang telah mengirimkan kejutan spesial. Sentuh tombol di bawah untuk membuka.</p>
-            <button onclick="mulaiKejutan()" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-full shadow-lg transition transform active:scale-95">
-                Buka Kejutan ✨
-            </button>
-        </div>
-    </div>
-
-    <!-- Tahap 2: Konten Geser-geser (Slides) & Inti Ucapan -->
-    <div id="mainContainer" class="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-1000 pointer-events-none">
-        
-        <!-- Slide 1: Sapaan & Foto Tujuan -->
-        <div class="slide active flex-col items-center justify-center max-w-sm w-full text-center bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl shadow-2xl">
-            <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-pink-400 mx-auto mb-4 shadow-lg">
-                <img id="displayFotoTujuan" src="" alt="Foto" class="w-full h-full object-cover">
-            </div>
-            <h2 class="text-3xl font-serif font-bold mb-2">Hai, <span id="displayNama" class="text-pink-300"></span></h2>
-            <p class="text-gray-300 text-sm mb-6">Geser ke samping untuk melihat pesannya ya 👉</p>
-            <button onclick="gantiSlide(1)" class="bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded-full font-bold shadow-md">
-                Geser / Lanjut ➔
-            </button>
-        </div>
-
-        <!-- Slide 2: Kata-kata Utama & Tanda Tangan (Inti Ucapan) -->
-        <div class="slide flex-col items-center justify-center max-w-sm w-full text-center bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl shadow-2xl">
-            <p id="displayPesan" class="text-lg leading-relaxed mb-6 whitespace-pre-wrap font-light text-pink-100"></p>
-            <p class="text-sm italic text-gray-300">Spesial dari,</p>
-            <p id="displayTtd" class="text-xl font-serif font-bold text-pink-300 mt-1 mb-6"></p>
-            <button onclick="gantiSlide(0)" class="bg-white/20 hover:bg-white/30 text-white px-6 py-2 rounded-full text-sm font-bold">
-                ⬅ Kembali
-            </button>
-        </div>
-
-    </div>
-
     <script>
         let currentSlide = 0;
 
@@ -68,19 +10,20 @@
 
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const encodedData = urlParams.get('s');
+            const targetName = urlParams.get('to');
             
-            if(encodedData) {
-                try {
-                    const data = JSON.parse(decodeURIComponent(atob(encodedData)));
+            if(targetName) {
+                // Ambil data dari penyimpanan lokal berdasarkan nama tujuan
+                const savedData = localStorage.getItem('ucapan_' + targetName);
+                
+                if(savedData) {
+                    const data = JSON.parse(savedData);
                     
-                    // Masukkan data ke elemen HTML
                     document.getElementById('displayNama').innerText = data.n;
                     document.getElementById('displayPesan').innerText = data.p;
                     document.getElementById('displayTtd').innerText = data.t;
                     document.getElementById('displayFotoTujuan').src = data.ft;
                     
-                    // Jika ada foto latar, pasang sebagai background. Jika tidak, pakai warna hitam elegan.
                     if(data.fl) {
                         document.getElementById('bgImage').style.backgroundImage = `url('${data.fl}')`;
                     } else {
@@ -88,24 +31,21 @@
                     }
                     
                     document.getElementById('bgMusic').src = data.m;
-
-                } catch (e) {
-                    Swal.fire('Error', 'Tautan kartu ucapan tidak valid.', 'error');
+                } else {
+                    Swal.fire('Ups', 'Data kartu ucapan tidak ditemukan atau sudah kedaluwarsa.', 'warning');
                 }
             } else {
-                Swal.fire('Ups', 'Kartu ucapan tidak ditemukan.', 'warning');
+                Swal.fire('Ups', 'Tautan tidak valid.', 'error');
             }
         };
 
         function mulaiKejutan() {
-            // Sembunyikan layar drama pembuka
             const intro = document.getElementById('introScreen');
             intro.style.opacity = 0;
             setTimeout(() => {
                 intro.style.display = 'none';
             }, 700);
 
-            // Tampilkan kontainer utama dan putar musik
             const main = document.getElementById('mainContainer');
             main.style.opacity = 1;
             main.style.pointerEvents = 'auto';
@@ -114,5 +54,3 @@
             music.play().catch(e => console.log("Audio play blocked"));
         }
     </script>
-</body>
-</html>
