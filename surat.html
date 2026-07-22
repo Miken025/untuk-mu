@@ -3,86 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spesial Untukmu ✨</title>
+    <title>Surat Spesial Untukmu ✨</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes float {
             0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-12px) rotate(1.5deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
             100% { transform: translateY(0px) rotate(0deg); }
         }
         @keyframes pulseGlow {
             0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.08); }
+            50% { opacity: 0.6; transform: scale(1.05); }
         }
         .animate-float { animation: float 4s ease-in-out infinite; }
         .animate-glow { animation: pulseGlow 3s ease-in-out infinite; }
     </style>
 </head>
-<body id="bodyTema" class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center relative overflow-x-hidden font-sans">
+<body id="bodyTema" class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center relative overflow-x-hidden font-sans p-4">
 
-    <!-- BACKGROUND BLUR -->
+    <!-- BACKGROUND BLUR DARI FOTO UTAMA -->
     <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div id="bgBlurImage" class="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-30 scale-110 transition-all duration-1000"></div>
+        <div id="bgBlurImage" class="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-35 scale-110 transition-all duration-1000"></div>
         <div id="bgGradient" class="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-purple-950 opacity-90 transition-all duration-1000"></div>
     </div>
 
-    <!-- AUDIO & TOMBOL MUSIK -->
+    <!-- TOMBOL MUSIK MINIMALIS -->
     <audio id="musikLatar" loop></audio>
     <button onclick="toggleMusik()" id="btnMusik" class="fixed top-5 right-5 z-50 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 p-3 rounded-full shadow-2xl transition-all flex items-center justify-center text-white text-xl hidden">
         <span id="ikonMusik">🎵</span>
     </button>
 
-    <!-- LAYAR PEMBUKA (AMPLOP) -->
-    <div id="layarAwal" class="relative z-10 text-center p-6 max-w-sm w-full mx-4">
+    <!-- LAYAR PEMBUKA (AMPLOP / SAMPUL KARTU EKSKLUSIF) -->
+    <div id="layarAwal" class="relative z-10 text-center max-w-sm w-full mx-auto">
         <div class="bg-white/10 backdrop-blur-2xl border border-white/20 p-8 rounded-3xl shadow-2xl animate-float">
             <div class="text-6xl mb-4">💌</div>
-            <h1 class="text-2xl font-semibold tracking-wide mb-2 text-amber-200">Sebuah Pesan Khusus</h1>
-            <p class="text-slate-300 text-sm mb-6">Sentuh untuk membuka perjalanan ini...</p>
+            <h1 id="judulSampul" class="text-2xl font-semibold tracking-wide mb-2 text-amber-200">Sebuah Lembaran Spesial</h1>
+            <p class="text-slate-300 text-sm mb-6">Sentuh amplop untuk membuka kartu ucapan...</p>
             <button onclick="mulaiCerita()" id="btnBuka" class="w-full bg-gradient-to-r from-amber-500 to-rose-500 text-white font-medium py-3.5 px-6 rounded-2xl shadow-lg hover:opacity-95 active:scale-95 transition-all tracking-wider">
-                BUKA SURAT
+                BUKA KARTU UCAPAN
             </button>
         </div>
     </div>
 
-    <!-- POPUP SLIDER / GESER FOTO SEBELUM PUNCAK (CERITA BERUNTUN) -->
+    <!-- KARTU CERITA / SLIDER FOTO (BERGESER HALUS SEPERTI BUKU CERITA) -->
     <div id="modalSlider" class="hidden fixed inset-0 z-40 bg-slate-950/85 backdrop-blur-xl flex items-center justify-center p-4">
-        <div class="bg-slate-900/90 border border-white/15 rounded-3xl p-6 max-w-md w-full shadow-2xl text-center relative flex flex-col items-center">
+        <div class="bg-slate-900/90 border border-white/15 rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl text-center relative flex flex-col items-center">
             
-            <div class="w-full flex justify-between items-center mb-4">
-                <span id="indikatorSlide" class="text-xs text-amber-300 font-medium tracking-wider uppercase">Cerita 1 / 1</span>
-                <button onclick="tutupSliderLangsungKePuncak()" class="text-xs text-slate-400 hover:text-white bg-white/5 border border-white/10 px-3 py-1 rounded-full">Lewati ke Puncak ➔</button>
-            </div>
-
-            <!-- KOTAK TAMPILAN FOTO & TEKS GESER -->
+            <!-- KOTAK KARTU FOTO & TEKS -->
             <div class="w-full mb-6">
-                <div class="p-2.5 bg-white/5 border border-white/10 rounded-2xl shadow-lg inline-block mb-4">
-                    <img id="slideFoto" src="" class="w-64 h-64 md:w-72 md:h-72 object-cover rounded-xl shadow-md mx-auto" alt="Kenangan">
+                <div class="p-2.5 bg-white/5 border border-white/10 rounded-2xl shadow-xl inline-block mb-4 transform rotate-1">
+                    <img id="slideFoto" src="" class="w-60 h-60 md:w-68 md:h-68 object-cover rounded-xl shadow-md mx-auto" alt="Kenangan">
                 </div>
-                <div class="bg-black/40 border border-white/10 p-4 rounded-xl min-h-[60px] flex items-center justify-center">
-                    <p id="slideCaption" class="text-slate-200 text-sm italic"></p>
+                <div class="bg-black/40 border border-white/10 p-4 rounded-2xl min-h-[70px] flex items-center justify-center shadow-inner">
+                    <p id="slideCaption" class="text-slate-200 text-sm md:text-base italic font-light"></p>
                 </div>
             </div>
 
-            <!-- TOMBOL GESER (SEBELUM SAMPAI PUNCAK) -->
+            <!-- TOMBOL NAVIGASI GESER -->
             <div class="w-full flex gap-3">
-                <button onclick="slideSebelumnya()" id="btnPrev" class="flex-1 bg-white/10 hover:bg-white/15 text-white font-medium py-3 rounded-xl transition-all text-sm">← Sebelumnya</button>
-                <button onclick="slideBerikutnya()" id="btnNext" class="flex-1 bg-gradient-to-r from-amber-500 to-rose-500 text-white font-medium py-3 rounded-xl shadow-lg transition-all text-sm">Lanjut Geser 👉</button>
+                <button onclick="slideSebelumnya()" id="btnPrev" class="flex-1 bg-white/10 hover:bg-white/15 text-white font-medium py-3 rounded-xl transition-all text-sm border border-white/10">← Sebelumnya</button>
+                <button onclick="slideBerikutnya()" id="btnNext" class="flex-1 bg-gradient-to-r from-amber-500 to-rose-500 text-white font-medium py-3 rounded-xl shadow-lg transition-all text-sm">Geser Cerita 👉</button>
             </div>
         </div>
     </div>
 
-    <!-- ISI KARTU UCAPAN (PUNCAK INTI - FOTO MENYATU DENGAN TEKS) -->
-    <div id="isiSurat" class="hidden relative z-10 w-full max-w-md mx-auto p-4 transition-all duration-700 opacity-0 transform translate-y-4">
-        <div class="bg-slate-900/80 backdrop-blur-2xl border border-white/15 rounded-3xl shadow-2xl overflow-hidden p-6 md:p-8 text-center">
+    <!-- PUNCAK KARTU UCAPAN INTI (FOTO UTAMA MENYATU DENGAN PESAN) -->
+    <div id="isiSurat" class="hidden relative z-10 w-full max-w-lg mx-auto transition-all duration-700 opacity-0 transform translate-y-4">
+        <div class="bg-slate-900/85 backdrop-blur-2xl border border-white/15 rounded-3xl shadow-2xl overflow-hidden p-6 md:p-8 text-center">
             
             <div class="flex justify-start mb-4">
                 <button onclick="resetSurat()" class="text-xs tracking-wider uppercase text-slate-400 hover:text-white bg-white/5 border border-white/10 px-3 py-1.5 rounded-full transition-all">
-                    ← Ulangi Cerita
+                    ← Ulangi Dari Awal
                 </button>
             </div>
 
-            <!-- FOTO UTAMA MENYATU ESTETIK -->
+            <!-- FOTO UTAMA MENYATU DENGAN ESTETIK -->
             <div class="mb-6">
                 <div class="inline-block p-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl transform rotate-1">
                     <img id="fotoUtama" src="" class="w-48 h-48 md:w-56 md:h-56 object-cover rounded-xl shadow-md mx-auto" alt="Puncak">
@@ -91,12 +86,12 @@
 
             <!-- NAMA TUJUAN -->
             <div class="mb-5">
-                <h2 class="text-xs uppercase tracking-widest text-slate-400 mb-1">Kepada</h2>
+                <h2 id="teksKepada" class="text-xs uppercase tracking-widest text-slate-400 mb-1">Kepada Spesial</h2>
                 <h3 id="namaTujuan" class="text-3xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-rose-300 to-amber-100"></h3>
             </div>
 
             <!-- KATA-KATA UTAMA / PESAN INTI -->
-            <div class="bg-black/40 border border-white/10 p-5 rounded-2xl mb-6 shadow-inner text-left">
+            <div class="bg-black/40 border border-white/10 p-5 md:p-6 rounded-2xl mb-6 shadow-inner text-left">
                 <p id="pesanUtama" class="text-slate-200 text-sm md:text-base leading-relaxed whitespace-pre-wrap font-light"></p>
             </div>
 
@@ -123,7 +118,7 @@
 
                 dataGlobal = JSON.parse(decodeURIComponent(atob(dataRahasia)));
 
-                terapkanTema(dataGlobal.tema);
+                terapkanTemaDanAcara(dataGlobal.tema, dataGlobal.acara);
 
                 document.getElementById('namaTujuan').innerText = dataGlobal.n;
                 document.getElementById('pesanUtama').innerText = dataGlobal.p;
@@ -138,6 +133,43 @@
                 console.error(error);
             }
         };
+
+        function terapkanTemaAndAcara(kodeTema, kodeAcara) {
+            const grad = document.getElementById('bgGradient');
+            const btnBuka = document.getElementById('btnBuka');
+            const judulSampul = document.getElementById('judulSampul');
+            const teksKepada = document.getElementById('teksKepada');
+            
+            // Atur Teks Sampul Berdasarkan Acara
+            if (kodeAcara === 'ultah') {
+                judulSampul.innerText = "Selamat Ulang Tahun ✨";
+                teksKepada.innerText = "Spesial Ulang Tahun Untuk";
+            } else if (kodeAcara === 'anniv') {
+                judulSampul.innerText = "Happy Anniversary 💍";
+                teksKepada.innerText = "Spesial Hari Jadi Untuk";
+            } else if (kodeAcara === 'rindu') {
+                judulSampul.innerText = "Sebuah Pesan Dari Hati 🌙";
+                teksKepada.innerText = "Teruntuk Tersayang";
+            } else {
+                judulSampul.innerText = "Sebuah Lembaran Romantis 💖";
+                teksKepada.innerText = "Kepada Yang Tercinta";
+            }
+
+            // Atur Tema Warna
+            if (kodeTema === 'emerald') {
+                grad.className = "absolute inset-0 bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900 opacity-90 transition-all duration-1000";
+                btnBuka.className = "w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium py-3.5 px-6 rounded-2xl shadow-lg hover:opacity-95 active:scale-95 transition-all tracking-wider";
+            } else if (kodeTema === 'sunset') {
+                grad.className = "absolute inset-0 bg-gradient-to-br from-slate-950 via-orange-950 to-purple-950 opacity-90 transition-all duration-1000";
+                btnBuka.className = "w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-medium py-3.5 px-6 rounded-2xl shadow-lg hover:opacity-95 active:scale-95 transition-all tracking-wider";
+            } else if (kodeTema === 'crimson') {
+                grad.className = "absolute inset-0 bg-gradient-to-br from-slate-950 via-rose-950 to-red-950 opacity-90 transition-all duration-1000";
+                btnBuka.className = "w-full bg-gradient-to-r from-rose-600 to-red-700 text-white font-medium py-3.5 px-6 rounded-2xl shadow-lg hover:opacity-95 active:scale-95 transition-all tracking-wider";
+            } else {
+                grad.className = "absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-purple-950 opacity-90 transition-all duration-1000";
+                btnBuka.className = "w-full bg-gradient-to-r from-amber-500 to-rose-500 text-white font-medium py-3.5 px-6 rounded-2xl shadow-lg hover:opacity-95 active:scale-95 transition-all tracking-wider";
+            }
+        }
 
         function mulaiCerita() {
             const layarAwal = document.getElementById('layarAwal');
@@ -157,7 +189,7 @@
                     document.getElementById('ikonMusik').innerText = '🔇';
                 });
 
-                // Cek apakah ada galeri geser sebelum puncak
+                // Cek galeri geser
                 if (dataGlobal.galeri && dataGlobal.galeri.length > 0) {
                     indeksSlideAktif = 0;
                     tampilkanSlide();
@@ -175,14 +207,17 @@
             const capF = (typeof item === 'object' && item.caption) ? item.caption : '';
 
             document.getElementById('slideFoto').src = urlF;
-            document.getElementById('slideCaption').innerText = capF || `Kenangan ke-${indeksSlideAktif + 1}`;
-            document.getElementById('indikatorSlide').innerText = `Cerita ${indeksSlideAktif + 1} / ${dataGlobal.galeri.length}`;
+            document.getElementById('slideCaption').innerText = capF || `Kenangan berharga ${indeksSlideAktif + 1}`;
 
             const btnNext = document.getElementById('btnNext');
+            const btnPrev = document.getElementById('btnPrev');
+
+            btnPrev.style.display = indeksSlideAktif === 0 ? 'none' : 'block';
+
             if (indeksSlideAktif === dataGlobal.galeri.length - 1) {
-                btnNext.innerText = "Menuju Puncak Inti ➔";
+                btnNext.innerText = "Menuju Puncak Kartu ➔";
             } else {
-                btnNext.innerText = "Lanjut Geser 👉";
+                btnNext.innerText = "Geser Cerita 👉";
             }
         }
 
@@ -191,7 +226,8 @@
                 indeksSlideAktif++;
                 tampilkanSlide();
             } else {
-                tutupSliderLangsungKePuncak();
+                document.getElementById('modalSlider').classList.add('hidden');
+                tampilkanPuncakSurat();
             }
         }
 
@@ -200,11 +236,6 @@
                 indeksSlideAktif--;
                 tampilkanSlide();
             }
-        }
-
-        function tutupSliderLangsungKePuncak() {
-            document.getElementById('modalSlider').classList.add('hidden');
-            tampilkanPuncakSurat();
         }
 
         function tampilkanPuncakSurat() {
@@ -231,25 +262,6 @@
                     layarAwal.style.opacity = '1';
                 }
             }, 500);
-        }
-
-        function terapkanTema(kodeTema) {
-            const grad = document.getElementById('bgGradient');
-            const btnBuka = document.getElementById('btnBuka');
-            
-            if (kodeTema === 'emerald') {
-                grad.className = "absolute inset-0 bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900 opacity-90 transition-all duration-1000";
-                btnBuka.className = "w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium py-3.5 px-6 rounded-2xl shadow-lg hover:opacity-95 active:scale-95 transition-all tracking-wider";
-            } else if (kodeTema === 'sunset') {
-                grad.className = "absolute inset-0 bg-gradient-to-br from-slate-950 via-orange-950 to-purple-950 opacity-90 transition-all duration-1000";
-                btnBuka.className = "w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-medium py-3.5 px-6 rounded-2xl shadow-lg hover:opacity-95 active:scale-95 transition-all tracking-wider";
-            } else if (kodeTema === 'crimson') {
-                grad.className = "absolute inset-0 bg-gradient-to-br from-slate-950 via-rose-950 to-red-950 opacity-90 transition-all duration-1000";
-                btnBuka.className = "w-full bg-gradient-to-r from-rose-600 to-red-700 text-white font-medium py-3.5 px-6 rounded-2xl shadow-lg hover:opacity-95 active:scale-95 transition-all tracking-wider";
-            } else {
-                grad.className = "absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-purple-950 opacity-90 transition-all duration-1000";
-                btnBuka.className = "w-full bg-gradient-to-r from-amber-500 to-rose-500 text-white font-medium py-3.5 px-6 rounded-2xl shadow-lg hover:opacity-95 active:scale-95 transition-all tracking-wider";
-            }
         }
 
         function toggleMusik() {
