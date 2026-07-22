@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untukmu...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="overflow-hidden bg-black">
+    <!-- Latar Belakang Blur -->
+    <div id="bgImage" class="absolute inset-0 z-0 transition-all duration-1000" style="background-size: cover; background-position: center; filter: blur(12px) brightness(0.4); transform: scale(1.1);"></div>
+
+    <audio id="bgMusic" loop></audio>
+
+    <!-- Konten Utama -->
+    <div class="relative z-10 min-h-screen flex items-center justify-center p-4 opacity-0 transition-opacity duration-1000" id="suratContainer">
+        <div class="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center text-white">
+            <h1 class="text-3xl font-serif font-bold mb-4">Hai, <span id="displayNama" class="text-pink-300"></span></h1>
+            <p id="displayPesan" class="text-lg leading-relaxed mb-6 whitespace-pre-wrap font-light"></p>
+            <p class="text-sm italic text-gray-300">Dari,</p>
+            <p id="displayTtd" class="text-xl font-serif font-bold text-pink-300 mt-1 mb-8"></p>
+            
+            <button onclick="balasWA()" class="w-full bg-pink-600/80 backdrop-blur-sm text-white font-bold py-3 rounded-full hover:bg-pink-700 transition shadow-lg">
+                Balas Surat 💌
+            </button>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const encodedData = urlParams.get('s');
+            
+            if(encodedData) {
+                try {
+                    // Dekripsi data dari URL
+                    const data = JSON.parse(decodeURIComponent(atob(encodedData)));
+                    document.getElementById('displayNama').innerText = data.n;
+                    document.getElementById('displayPesan').innerText = data.p;
+                    document.getElementById('displayTtd').innerText = data.t;
+                    document.getElementById('bgImage').style.backgroundImage = `url('${data.f}')`;
+                    document.getElementById('bgMusic').src = data.m;
+                    
+                    Swal.fire({
+                        title: 'Ada Surat Buat Kamu 💌',
+                        text: 'Sentuh untuk membuka',
+                        confirmButtonText: 'Buka Surat',
+                        confirmButtonColor: '#d81b60',
+                        allowOutsideClick: false
+                    }).then(() => {
+                        document.getElementById('bgMusic').play();
+                        document.getElementById('suratContainer').style.opacity = 1;
+                    });
+
+                } catch (e) {
+                    Swal.fire('Error', 'Link surat rusak atau tidak valid.', 'error');
+                }
+            } else {
+                Swal.fire('Ups', 'Surat tidak ditemukan.', 'warning');
+            }
+        };
+
+        function balasWA() {
+            window.location.href = "https://api.whatsapp.com/send?text=Aku udah baca suratnya! Makasih yaa ❤️";
+        }
+    </script>
+</body>
+</html>
