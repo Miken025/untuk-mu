@@ -3,105 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Untuk Kamu yang Spesial ✨</title>
+    <title>Surat Spesial Untukmu</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        .slide { display: none; }
-        .slide.active { display: flex; }
+        /* Efek animasi tambahan */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animasi-ngambang {
+            animation: float 3s ease-in-out infinite;
+        }
     </style>
 </head>
-<body class="overflow-hidden bg-black text-white relative min-h-screen">
-    
-    <div id="bgImage" class="absolute inset-0 z-0 bg-cover bg-center transition-all duration-1000 filter blur-md brightness-40 scale-105"></div>
-    <audio id="bgMusic" loop></audio>
+<body class="bg-pink-100 flex items-center justify-center min-h-screen bg-cover bg-center bg-fixed transition-all duration-700" id="bodyLatar">
 
-    <div id="introScreen" class="absolute inset-0 z-20 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-700">
-        <div class="bg-white/10 border border-white/20 p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center">
-            <div class="text-5xl mb-4 animate-bounce">💌</div>
-            <h1 class="text-2xl font-bold mb-2">Ada Sesuatu untukmu...</h1>
-            <p class="text-gray-300 text-sm mb-6">Seseorang telah mengirimkan kejutan spesial. Sentuh tombol di bawah untuk membuka.</p>
-            <button onclick="mulaiKejutan()" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-full shadow-lg transition transform active:scale-95">
-                Buka Kejutan ✨
+    <!-- Layar Sentuh Awal (Wajib agar musik bisa memutar otomatis di HP) -->
+    <div id="layarAwal" class="fixed inset-0 bg-pink-200 flex flex-col items-center justify-center z-50">
+        <div class="animasi-ngambang text-center">
+            <div class="text-6xl mb-4">💌</div>
+            <h1 class="text-2xl font-bold text-pink-600 mb-6" style="font-family: cursive;">Ada pesan spesial buat kamu...</h1>
+            <button onclick="bukaSurat()" class="bg-pink-600 text-white px-8 py-3 rounded-full font-bold shadow-xl hover:bg-pink-700 active:scale-95 transition-all">
+                Buka Surat
             </button>
         </div>
     </div>
 
-    <div id="mainContainer" class="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-1000 pointer-events-none">
+    <!-- Isi Kartu Ucapan -->
+    <div id="isiSurat" class="hidden bg-white/85 backdrop-blur-sm p-8 rounded-3xl shadow-2xl w-full max-w-md mx-4 text-center transform transition-all">
+        <!-- Foto Utama -->
+        <img id="fotoUtama" src="" class="w-40 h-40 object-cover rounded-full mx-auto border-4 border-pink-400 shadow-lg mb-5" alt="Foto">
         
-        <div class="slide active flex-col items-center justify-center max-w-sm w-full text-center bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl shadow-2xl">
-            <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-pink-400 mx-auto mb-4 shadow-lg">
-                <img id="displayFotoTujuan" src="" alt="Foto" class="w-full h-full object-cover">
-            </div>
-            <h2 class="text-3xl font-serif font-bold mb-2">Hai, <span id="displayNama" class="text-pink-300"></span></h2>
-            <p class="text-gray-300 text-sm mb-6">Geser ke samping untuk melihat pesannya ya 👉</p>
-            <button onclick="gantiSlide(1)" class="bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded-full font-bold shadow-md">
-                Geser / Lanjut ➔
-            </button>
+        <!-- Teks -->
+        <h2 class="text-2xl font-bold text-pink-600 mb-4" style="font-family: cursive;">Untuk: <span id="namaTujuan"></span></h2>
+        
+        <div class="bg-pink-50/50 p-4 rounded-2xl mb-6 shadow-inner">
+            <p id="pesanUtama" class="text-gray-700 whitespace-pre-wrap italic leading-relaxed"></p>
         </div>
-
-        <div class="slide flex-col items-center justify-center max-w-sm w-full text-center bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl shadow-2xl">
-            <p id="displayPesan" class="text-lg leading-relaxed mb-6 whitespace-pre-wrap font-light text-pink-100"></p>
-            <p class="text-sm italic text-gray-300">Spesial dari,</p>
-            <p id="displayTtd" class="text-xl font-serif font-bold text-pink-300 mt-1 mb-6"></p>
-            <button onclick="gantiSlide(0)" class="bg-white/20 hover:bg-white/30 text-white px-6 py-2 rounded-full text-sm font-bold">
-                ⬅ Kembali
-            </button>
-        </div>
-
+        
+        <p class="text-sm font-bold text-pink-500">Dari: <span id="ttdPengirim"></span></p>
     </div>
+
+    <!-- Pemutar Musik -->
+    <audio id="musikLatar" loop></audio>
 
     <script>
-        let currentSlide = 0;
-
-        function gantiSlide(n) {
-            const slides = document.querySelectorAll('.slide');
-            slides[currentSlide].classList.remove('active');
-            currentSlide = n;
-            slides[currentSlide].classList.add('active');
-        }
-
+        // Fungsi untuk mengambil dan memecah data dari link
         window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const rawData = urlParams.get('d'); 
-            
-            if(rawData) {
-                try {
-                    const data = JSON.parse(decodeURIComponent(atob(rawData)));
-                    
-                    document.getElementById('displayNama').innerText = data.n;
-                    document.getElementById('displayPesan').innerText = data.p;
-                    document.getElementById('displayTtd').innerText = data.t;
-                    document.getElementById('displayFotoTujuan').src = data.ft;
-                    
-                    if(data.fl) {
-                        document.getElementById('bgImage').style.backgroundImage = `url('${data.fl}')`;
-                    } else {
-                        document.getElementById('bgImage').style.backgroundImage = `url('${data.ft}')`;
-                    }
-                    
-                    document.getElementById('bgMusic').src = data.m;
-                } catch (e) {
-                    Swal.fire('Ups', 'Data kartu ucapan rusak.', 'error');
+            try {
+                // Ambil parameter '?d=' dari URL web
+                const urlParams = new URLSearchParams(window.location.search);
+                const dataRahasia = urlParams.get('d');
+                
+                if (!dataRahasia) {
+                    throw new Error("Pesan tidak ditemukan.");
                 }
-            } else {
-                Swal.fire('Ups', 'Tautan tidak lengkap.', 'error');
+
+                // Terjemahkan data
+                const dataAsli = JSON.parse(decodeURIComponent(atob(dataRahasia)));
+
+                // Masukkan data ke dalam halaman web
+                document.getElementById('namaTujuan').innerText = dataAsli.n;
+                document.getElementById('pesanUtama').innerText = dataAsli.p;
+                document.getElementById('ttdPengirim').innerText = dataAsli.t;
+                
+                // Masukkan link foto dan musik dari Vercel Blob
+                document.getElementById('fotoUtama').src = dataAsli.ft;
+                document.getElementById('musikLatar').src = dataAsli.m;
+
+                // Jika ada foto latar, pasang di background
+                if (dataAsli.fl && dataAsli.fl !== "") {
+                    document.getElementById('bodyLatar').style.backgroundImage = `url('${dataAsli.fl}')`;
+                }
+
+            } catch (error) {
+                alert("Maaf, link surat ini rusak atau tidak valid.");
+                console.error(error);
             }
         };
 
-        function mulaiKejutan() {
-            const intro = document.getElementById('introScreen');
-            intro.style.opacity = 0;
+        // Fungsi saat tombol Buka Surat ditekan
+        function bukaSurat() {
+            // Hilangkan layar awal
+            document.getElementById('layarAwal').style.opacity = '0';
             setTimeout(() => {
-                intro.style.display = 'none';
-            }, 700);
-
-            const main = document.getElementById('mainContainer');
-            main.style.opacity = 1;
-            main.style.pointerEvents = 'auto';
-
-            const music = document.getElementById('bgMusic');
-            music.play().catch(e => console.log("Audio diblokir browser"));
+                document.getElementById('layarAwal').classList.add('hidden');
+                // Tampilkan isi surat
+                document.getElementById('isiSurat').classList.remove('hidden');
+                // Putar musik
+                document.getElementById('musikLatar').play().catch(e => console.log("Musik diblokir browser: ", e));
+            }, 500);
         }
     </script>
 </body>
