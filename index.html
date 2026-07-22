@@ -10,7 +10,7 @@
 <body class="bg-pink-50 flex items-center justify-center min-h-screen p-4">
     <div class="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md">
         <h1 class="text-3xl font-bold text-pink-600 text-center mb-2" style="font-family: cursive;">Kartu Ucapan</h1>
-        <p class="text-center text-gray-500 mb-6">Pilih file dari HP, link otomatis pendek ✨</p>
+        <p class="text-center text-gray-500 mb-6">Penyimpanan Resmi Vercel ✨</p>
         
         <form id="formUcapan" class="space-y-4">
             <div>
@@ -44,27 +44,24 @@
     </div>
 
     <script>
-        // Fungsi rahasia untuk upload file dari HP ke server cloud publik (Catbox)
-        async function uploadKeCloud(file) {
-            const formData = new FormData();
-            formData.append('reqtype', 'fileupload');
-            formData.append('fileToUpload', file);
-            
-            const response = await fetch('https://catbox.moe/user/api.php', {
+        async function uploadKeVercel(file) {
+            const cleanName = file.name.replace(/[^a-zA-Z0-9.-]/g, '');
+            const response = await fetch(`/api/upload?filename=${Date.now()}-${cleanName}`, {
                 method: 'POST',
-                body: formData
+                body: file
             });
             
-            if (!response.ok) throw new Error("Gagal upload");
-            return await response.text(); // Mengembalikan link super pendek
+            if (!response.ok) throw new Error("Gagal upload ke Vercel");
+            const data = await response.json();
+            return data.url; 
         }
 
         document.getElementById('formUcapan').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             Swal.fire({
-                title: 'Mengunggah File...',
-                html: 'Tunggu sebentar ya, sedang menyimpan foto dan lagu dari HP Anda ke internet agar bisa dibuka siapa saja.',
+                title: 'Menyimpan Data...',
+                html: 'Sedang menyimpan file ke server aman...',
                 allowOutsideClick: false,
                 didOpen: () => { Swal.showLoading(); }
             });
@@ -72,20 +69,17 @@
             try {
                 const namaTujuan = document.getElementById('nama').value.trim().toLowerCase().replace(/\s+/g, '-');
                 
-                // Ambil file dari input form
                 const fileTujuanObj = document.getElementById('fotoTujuan').files[0];
                 const fileLatarObj = document.getElementById('fotoLatar').files[0];
                 const fileMusikObj = document.getElementById('musik').files[0];
 
-                // Proses upload satu per satu
-                const linkTujuan = await uploadKeCloud(fileTujuanObj);
-                const linkMusik = await uploadKeCloud(fileMusikObj);
+                const linkTujuan = await uploadKeVercel(fileTujuanObj);
+                const linkMusik = await uploadKeVercel(fileMusikObj);
                 let linkLatar = "";
                 if (fileLatarObj) {
-                    linkLatar = await uploadKeCloud(fileLatarObj);
+                    linkLatar = await uploadKeVercel(fileLatarObj);
                 }
 
-                // Data yang dibungkus sekarang sangat kecil karena hanya berisi teks link, bukan file mentah!
                 const data = {
                     n: document.getElementById('nama').value,
                     p: document.getElementById('pesan').value,
@@ -96,30 +90,31 @@
                 };
 
                 const dataKecil = btoa(encodeURIComponent(JSON.stringify(data)));
-                
                 const currentUrl = window.location.href.split('index.html')[0];
                 const baseUrl = currentUrl.endsWith('/') ? currentUrl : currentUrl + '/';
                 
-                // Hasil link pendek: untuk-mu-six.vercel.app/andi?d=kodekecil
-                const finalLink = baseUrl + namaTujuan + "?d=" + dataKecil;
+                // Menghasilkan link menuju surat.html
+                const finalLink = baseUrl + "surat.html?d=" + dataKecil;
 
                 Swal.fire({
                     icon: 'success',
                     title: '<span style="font-family:cursive; color:#d81b60">Sukses!</span>',
                     html: `<div class="border-2 border-pink-200 border-dashed p-3 rounded-xl text-pink-600 font-bold break-all text-sm mb-3">${finalLink}</div>`,
                     showCancelButton: true,
-                    confirmButtonText: 'Kirim WhatsApp',
+                    confirmButtonText: 'Salin & Buka Link',
                     cancelButtonText: 'Tutup',
                     confirmButtonColor: '#25D366',
                     cancelButtonColor: '#d33'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.open(`https://api.whatsapp.com/send?text=Hai, ada sesuatu yang spesial buat kamu nih: ${finalLink}`);
+                        navigator.clipboard.writeText(finalLink);
+                        window.location.href = finalLink;
                     }
                 });
 
             } catch (err) {
-                Swal.fire('Error', 'Proses gagal. Pastikan koneksi internet stabil.', 'error');
+                console.error(err);
+                Swal.fire('Error', 'Proses gagal. Silakan coba lagi.', 'error');
             }
         });
     </script>
