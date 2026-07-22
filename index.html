@@ -1,5 +1,4 @@
     <script>
-        // Fungsi pembantu untuk mengubah file dari HP menjadi format data lokal
         const fileToBase64 = file => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -11,8 +10,8 @@
             e.preventDefault();
             
             Swal.fire({
-                title: 'Memproses file...',
-                text: 'Sedang meracik kejutan romantis, mohon tunggu sebentar.',
+                title: 'Memproses...',
+                text: 'Meracik kejutan romantis...',
                 allowOutsideClick: false,
                 didOpen: () => { Swal.showLoading(); }
             });
@@ -35,22 +34,20 @@
                     fl: base64Latar,
                     m: base64Musik
                 };
-                
-                // Simpan data kartu ucapan ke memori browser sementara berdasarkan nama tujuannya
-                localStorage.setItem('ucapan_' + namaTujuan, JSON.stringify(data));
+
+                // Simpan langsung ke kompresi parameter aman agar bisa diakses perangkat lain
+                const compressed = btoa(encodeURIComponent(JSON.stringify(data)));
                 
                 const currentUrl = window.location.href.split('index.html')[0];
                 const baseUrl = currentUrl.endsWith('/') ? currentUrl : currentUrl + '/';
-                
-                // Link akhir menjadi sangat pendek dan rapi!
-                const finalLink = baseUrl + namaTujuan;
+                const finalLink = baseUrl + namaTujuan + "?data=" + compressed;
 
                 Swal.fire({
                     icon: 'success',
-                    title: '<span style="font-family:cursive; color:#d81b60">Kartu ucapan siap dikirim!</span>',
-                    html: `<div class="border-2 border-pink-200 border-dashed p-3 rounded-xl text-pink-600 font-bold break-all text-sm mb-3">${finalLink}</div>`,
+                    title: '<span style="font-family:cursive; color:#d81b60">Kartu ucapan siap!</span>',
+                    html: `<div class="border-2 border-pink-200 border-dashed p-3 rounded-xl text-pink-600 font-bold break-all text-xs mb-3">${finalLink}</div>`,
                     showCancelButton: true,
-                    confirmButtonText: 'Kirim lewat WhatsApp',
+                    confirmButtonText: 'Kirim WhatsApp',
                     cancelButtonText: 'Tutup',
                     confirmButtonColor: '#25D366',
                     cancelButtonColor: '#d33'
@@ -61,7 +58,7 @@
                 });
 
             } catch (err) {
-                Swal.fire('Error', 'Gagal memproses file. Pastikan ukuran file tidak terlalu besar.', 'error');
+                Swal.fire('Error', 'Ukuran file terlalu besar, pilih foto/musik yang lebih kecil.', 'error');
             }
         });
     </script>
