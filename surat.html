@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <!-- ISI KARTU UCAPAN (FULL LAYAR & BERKESAN) -->
+    <!-- ISI KARTU UCAPAN (FULL LAYAR) -->
     <div id="isiSurat" class="hidden relative z-10 w-full max-w-lg mx-auto p-4 md:p-6 transition-all duration-700 opacity-0 transform translate-y-4">
         <div class="bg-slate-900/75 backdrop-blur-2xl border border-white/15 rounded-3xl shadow-2xl overflow-hidden p-6 md:p-8">
             
@@ -62,19 +62,18 @@
                 <span class="text-xs uppercase tracking-widest text-amber-300/80 font-medium">Special Edition</span>
             </div>
 
-            <!-- BAGIAN GALERI GESER (YANG BISA BANYAK SAMPAI CAPEK) -->
-            <div id="sectionSlider" class="mb-6 hidden">
-                <div class="flex items-center justify-between mb-2">
-                    <p class="text-[11px] uppercase tracking-widest text-slate-400 font-medium">Galeri Kenangan Kita</p>
-                    <span class="text-[10px] text-amber-300/80 bg-white/5 px-2 py-0.5 rounded-full border border-white/10">Geser ke samping 👉</span>
+            <!-- BAGIAN GALERI GESER DENGAN TEKS/CAPTION (BIKIN CAPEK NGE-GESER SEBELUM PUNCAK) -->
+            <div id="sectionSlider" class="mb-8 hidden">
+                <div class="flex items-center justify-between mb-3">
+                    <p class="text-[11px] uppercase tracking-widest text-slate-400 font-medium">Perjalanan Cerita Kita</p>
+                    <span class="text-[10px] text-amber-300/80 bg-white/5 px-2.5 py-1 rounded-full border border-white/10">Geser ke samping 👉</span>
                 </div>
-                <!-- Container Geser Dengan Efek Snap Modern -->
-                <div id="containerSlider" class="flex gap-3 overflow-x-auto pb-3 pt-1 px-1 snap-x scroll-smooth">
-                    <!-- Foto kecil galeri masuk otomatis -->
+                <div id="containerSlider" class="flex gap-4 overflow-x-auto pb-4 pt-1 px-1 snap-x scroll-smooth">
+                    <!-- Kartu foto & teks galeri masuk otomatis -->
                 </div>
             </div>
 
-            <!-- FOTO UTAMA (PUNCAK / UTAMA) -->
+            <!-- FOTO UTAMA (PUNCAK) -->
             <div class="mb-6 text-center">
                 <div class="inline-block p-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl transform rotate-1 hover:rotate-0 transition-transform duration-500">
                     <img id="fotoUtama" src="" class="w-48 h-48 md:w-56 md:h-56 object-cover rounded-xl shadow-md mx-auto" alt="Puncak Kenangan">
@@ -115,7 +114,6 @@
 
                 const dataAsli = JSON.parse(decodeURIComponent(atob(dataRahasia)));
 
-                // Terapkan Tema Warna Sesuai Pilihan Admin
                 terapkanTema(dataAsli.tema);
 
                 document.getElementById('namaTujuan').innerText = dataAsli.n;
@@ -126,17 +124,21 @@
                 document.getElementById('bgBlurImage').style.backgroundImage = `url('${dataAsli.ft}')`;
                 audioElemen.src = dataAsli.m;
 
-                // SISTEM SLIDER / GALERI FOTO BANYAK (BISA BIKIN CAPEK NGE-GESER)
+                // TAMPILKAN GALERI GESER DENGAN TEKS / CAPTION
                 const containerSlider = document.getElementById('containerSlider');
                 const sectionSlider = document.getElementById('sectionSlider');
                 
                 if (dataAsli.galeri && dataAsli.galeri.length > 0) {
                     sectionSlider.classList.remove('hidden');
                     containerSlider.innerHTML = '';
-                    dataAsli.galeri.forEach((urlFoto) => {
+                    dataAsli.galeri.forEach((item) => {
+                        const urlF = typeof item === 'string' ? item : item.url;
+                        const capF = (typeof item === 'object' && item.caption) ? item.caption : '';
+
                         containerSlider.innerHTML += `
-                            <div class="flex-shrink-0 snap-center">
-                                <img src="${urlFoto}" class="w-24 h-24 md:w-28 md:h-28 object-cover rounded-xl border border-white/20 shadow-lg transform hover:scale-105 transition-all cursor-pointer" onclick="document.getElementById('fotoUtama').src='${urlFoto}'" alt="Kenangan">
+                            <div class="flex-shrink-0 snap-center w-40 bg-white/5 border border-white/10 rounded-2xl p-2.5 shadow-lg flex flex-col justify-between">
+                                <img src="${urlF}" class="w-full h-32 object-cover rounded-xl shadow cursor-pointer hover:opacity-90 transition-all" onclick="document.getElementById('fotoUtama').src='${urlF}'" alt="Kenangan">
+                                ${capF ? `<p class="text-[11px] text-slate-300 text-center mt-2 px-1 line-clamp-2 italic">${capF}</p>` : ''}
                             </div>
                         `;
                     });
@@ -162,7 +164,6 @@
                 grad.className = "absolute inset-0 bg-gradient-to-br from-slate-950 via-rose-950 to-red-950 opacity-90 transition-all duration-1000";
                 btnBuka.className = "w-full bg-gradient-to-r from-rose-600 to-red-700 text-white font-medium py-3.5 px-6 rounded-2xl shadow-lg hover:opacity-95 active:scale-95 transition-all tracking-wider";
             } else {
-                // Default Midnight
                 grad.className = "absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-purple-950 opacity-90 transition-all duration-1000";
                 btnBuka.className = "w-full bg-gradient-to-r from-amber-500 to-rose-500 text-white font-medium py-3.5 px-6 rounded-2xl shadow-lg hover:opacity-95 active:scale-95 transition-all tracking-wider";
             }
